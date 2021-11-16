@@ -2,11 +2,12 @@
 
 public class nQueens
 {
-    static int maxRow = 4;
-    static int board[][] = new int[maxRow][maxRow];
+    static int maxRow;
+    static int board[][];
     public static void main(String[] args)
     {
         maxRow = Integer.parseInt(args[0]);
+        board = new int[maxRow][maxRow];
         if(findQueen(0))
         {
             printBoard();
@@ -55,7 +56,7 @@ public class nQueens
         }
         
         //Check to the right
-        for (int i = col; col<maxRow; i++)
+        for (int i = col; i<maxRow; i++)
         {
             if (board[row][i] == 1)
             {
@@ -64,7 +65,7 @@ public class nQueens
         }
         
         //Check to the left
-        for (int i = col; col>-1; i--)
+        for (int i = col; i>-1; i--)
         {
             if (board[row][i] == 1)
             {
@@ -73,8 +74,58 @@ public class nQueens
         }
         
         //Check the Upper left
+        for (int i = 1; i<=row; i++)
+        {
+           if (inBoard(row-i, col-i)) //If it's still inside the board
+           {
+               if (board[row-i][col-i] == 1)
+               {
+                 return false;
+               }
+           }else {break;}
+        }
         
+        //Check the Upper right
+        for (int i = 1; i<=row; i++)
+        {
+           if (inBoard(row-i, col+i)) //If it's still inside the board
+           {
+               if (board[row-i][col+i] == 1)
+               {
+                 return false;
+               }
+           }else {break;}
+        }
+        
+        //Check the Bottom right
+        for (int i = 1; i<(maxRow-row); i++)
+        {
+           if (inBoard(row+i, col+i)) //If it's still inside the board
+           {
+               if (board[row+i][col+i] == 1)
+               {
+                 return false;
+               }
+           }else {break;}
+        }
+        
+        //Check the Bottom left
+        for (int i = 1; i<(maxRow-row); i++)
+        {
+           if (inBoard(row+i, col-i)) //If it's still inside the board
+           {
+               if (board[row+i][col-i] == 1)
+               {
+                 return false;
+               }
+           }else {break;}
+        }
         return true;
+    }
+    
+    public static boolean inBoard(int row, int col)
+    {
+        return ((row>-1 && row<maxRow) && (col>-1 && col<maxRow));
     }
     
     public static void addQueen(int row, int col)
@@ -93,7 +144,12 @@ public class nQueens
         {
             for (int col = 0; col < maxRow; col++)
             {
-                System.out.print(board[row][col] + " ");
+                if (board[row][col] == 0)
+                {
+                  System.out.print("_ ");   
+                }else {
+                  System.out.print("Q ");  
+                }
             }
             System.out.println();
         }
